@@ -1,37 +1,39 @@
 package lab2.buildings;
 
-public class Flat
+import lab3.officeBuildings.Space;
+
+public class Flat implements Space
 {
     private double square;
-    private int roomQuantity;
+    private int rooms;
 
 
     public Flat()
     {
         square = 50;
-        roomQuantity = 2;
+        rooms = 2;
     }
 
     public void Print()
     {
-        System.out.println("flat: " + square + " " + roomQuantity);
+        System.out.println("flat: " + square + " " + rooms);
     }
 
     public Flat(double squareValue)
     {
         square = squareValue;
-        roomQuantity = 2;
+        rooms = 2;
     }
 
     public Flat(double squareValue, int roomValue)
     {
         square = squareValue;
-        roomQuantity = roomValue;
+        rooms = roomValue;
     }
 
-    public int getRoomQuantity()
+    public int getRooms()
     {
-        return roomQuantity;
+        return rooms;
     }
 
     public double getSquare()
@@ -44,9 +46,9 @@ public class Flat
         square = squareValue;
     }
 
-    public void setRoomQuantity(int roomValue)
+    public void setRooms(int roomValue)
     {
-        roomQuantity = roomValue;
+        rooms = roomValue;
     }
 
 }

@@ -1,6 +1,6 @@
 package lab3.officeBuildings;
 
-public class Office
+public class Office implements Space
 {
     //fields
     private int rooms;

@@ -108,7 +108,7 @@ public class Dwelling
             flatNumber -= floors[floorNumber].getFlats();
         }
         return new Flat(floors[floorNumber].getFlat(flatNumber).getSquare(),
-                        floors[floorNumber].getFlat(flatNumber).getRoomQuantity());
+                        floors[floorNumber].getFlat(flatNumber).getRooms());
     }
 
     public void changeFlat(int flatNumber, Flat newFlat)

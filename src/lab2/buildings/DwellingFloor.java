@@ -2,14 +2,14 @@ package lab2.buildings;
 
 public class DwellingFloor
 {
-    private Flat floor[];
+    private Flat[] floor;
 
     public void setFloor(Flat[] floorValue)
     {
         floor = new Flat[floorValue.length];
         for (int i = 0; i < floorValue.length; ++i)
         {
-            floor[i] = new Flat(floorValue[i].getSquare(), floorValue[i].getRoomQuantity());
+            floor[i] = new Flat(floorValue[i].getSquare(), floorValue[i].getRooms());
         }
 
     }
@@ -28,7 +28,7 @@ public class DwellingFloor
         floor = new Flat[flatsArray.length];
         for (int i = 0; i < flatsArray.length; ++i)
         {
-            floor[i] = new Flat(flatsArray[i].getSquare(), flatsArray[i].getRoomQuantity());
+            floor[i] = new Flat(flatsArray[i].getSquare(), flatsArray[i].getRooms());
         }
     }
 
@@ -52,7 +52,7 @@ public class DwellingFloor
         int sumRooms = 0;
         for (Flat current : floor)
         {
-            sumRooms += current.getRoomQuantity();
+            sumRooms += current.getRooms();
         }
         return sumRooms;
     }
@@ -62,7 +62,7 @@ public class DwellingFloor
         Flat[] forReturn = new Flat[floor.length];
         for (int i = 0; i < floor.length; ++i)
         {
-            forReturn[i] = new Flat(floor[i].getSquare(), floor[i].getRoomQuantity());
+            forReturn[i] = new Flat(floor[i].getSquare(), floor[i].getRooms());
         }
         return forReturn;
     }
@@ -71,7 +71,7 @@ public class DwellingFloor
     {
         //Flat forReturn = new Flat(floor[flatIndex].getSquare(), floor[flatIndex].getRoom_quantity());
         //return forReturn;
-        return new Flat(floor[flatIndex].getSquare(), floor[flatIndex].getRoomQuantity());
+        return new Flat(floor[flatIndex].getSquare(), floor[flatIndex].getRooms());
     }
 
     public void changeFlat(int flatNum, Flat newFlat)
@@ -81,7 +81,7 @@ public class DwellingFloor
             System.out.println("ERROR: invalid number");
             return;
         }
-        floor[flatNum] = new Flat(newFlat.getSquare(), newFlat.getRoomQuantity());
+        floor[flatNum] = new Flat(newFlat.getSquare(), newFlat.getRooms());
     }
 
     public void addFlat(int flatNum, Flat newFlat)
@@ -140,7 +140,7 @@ public class DwellingFloor
                 indexOfMax = i;
             }
         }
-        return new Flat(floor[indexOfMax].getSquare(), floor[indexOfMax].getRoomQuantity());
+        return new Flat(floor[indexOfMax].getSquare(), floor[indexOfMax].getRooms());
     }
 
     public void print()
