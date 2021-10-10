@@ -8,7 +8,7 @@ public class DwellingFloor implements Floor
 {
     private Space[] floor;
 
-    public void setFloor(Space[] floorValue)
+    public void setFloor(Space... floorValue)
     {
         floor = new Space[floorValue.length];
         for (int i = 0; i < floorValue.length; ++i)
@@ -27,7 +27,7 @@ public class DwellingFloor implements Floor
         }
     }
 
-    public DwellingFloor(Space[] flatsArray)
+    public DwellingFloor(Space... flatsArray)
     {
         floor = new Flat[flatsArray.length];
         for (int i = 0; i < flatsArray.length; ++i)

@@ -19,7 +19,7 @@ public class Dwelling implements Building
         }
     }
 
-    public Dwelling(int floorsValue, int[] flatsValue)
+    public Dwelling(int floorsValue, int... flatsValue)
     {
         if (flatsValue.length < floorsValue)
         {
@@ -33,7 +33,7 @@ public class Dwelling implements Building
         }
     }
 
-    public Dwelling(Floor[] newFloors)
+    public Dwelling(Floor... newFloors)
     {
         floors = new Floor[newFloors.length];
         for (int i = 0; i < floors.length; ++i)
@@ -201,7 +201,7 @@ public class Dwelling implements Building
         return forReturn;
     }
 
-    public static void sort(Space[] flatArray)
+    public static void sort(Space... flatArray)
     {
         for (int i = 0; i < flatArray.length; ++i)
         {

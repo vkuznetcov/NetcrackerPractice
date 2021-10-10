@@ -35,7 +35,7 @@ public class OfficeFloor implements Floor
         floor = new ArrList(officeQuantity);
     }
 
-    public OfficeFloor(Space[] officeArray)
+    public OfficeFloor(Space... officeArray)
     {
         floor = new ArrList(new ArrListNode(officeArray[0]));
         for (int i = 1; i < officeArray.length; ++i)
