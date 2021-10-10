@@ -1,6 +1,9 @@
 package lab2.buildings;
 
-import lab3.officeBuildings.Space;
+import lab3.officeBuildings.Office;
+import lab3.officeBuildings.exceptions.InvalidRoomsCountException;
+import lab3.officeBuildings.exceptions.InvalidSpaceAreaException;
+import lab3.officeBuildings.interfaces.Space;
 
 public class Flat implements Space
 {
@@ -19,19 +22,25 @@ public class Flat implements Space
         System.out.println("flat: " + square + " " + rooms);
     }
 
-    public Flat(double squareValue)
+    public Flat(double squareValue) throws InvalidSpaceAreaException
     {
+        if(squareValue <= 0 || squareValue > Office.SQUARE)
+            throw new InvalidSpaceAreaException(squareValue);
         square = squareValue;
         rooms = 2;
     }
 
-    public Flat(double squareValue, int roomValue)
+    public Flat(double squareValue, int roomValue) throws InvalidSpaceAreaException, InvalidRoomsCountException
     {
+        if(squareValue <= 0 || squareValue > Office.SQUARE)
+            throw new InvalidSpaceAreaException(square);
+        if(roomValue <= 0 || roomValue > Office.ROOMS)
+            throw new InvalidRoomsCountException(rooms);
         square = squareValue;
         rooms = roomValue;
     }
 
-    public int getRooms()
+    public int getRoomsAmount()
     {
         return rooms;
     }
@@ -46,7 +55,7 @@ public class Flat implements Space
         square = squareValue;
     }
 
-    public void setRooms(int roomValue)
+    public void setRoomsAmount(int roomValue)
     {
         rooms = roomValue;
     }

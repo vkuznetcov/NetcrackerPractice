@@ -1,15 +1,19 @@
 package lab2.buildings;
 
-public class DwellingFloor
-{
-    private Flat[] floor;
+import lab3.officeBuildings.exceptions.SpaceIndexOutOfBoundsException;
+import lab3.officeBuildings.interfaces.Floor;
+import lab3.officeBuildings.interfaces.Space;
 
-    public void setFloor(Flat[] floorValue)
+public class DwellingFloor implements Floor
+{
+    private Space[] floor;
+
+    public void setFloor(Space[] floorValue)
     {
-        floor = new Flat[floorValue.length];
+        floor = new Space[floorValue.length];
         for (int i = 0; i < floorValue.length; ++i)
         {
-            floor[i] = new Flat(floorValue[i].getSquare(), floorValue[i].getRooms());
+            floor[i] = new Flat(floorValue[i].getSquare(), floorValue[i].getRoomsAmount());
         }
 
     }
@@ -23,36 +27,36 @@ public class DwellingFloor
         }
     }
 
-    public DwellingFloor(Flat[] flatsArray)
+    public DwellingFloor(Space[] flatsArray)
     {
         floor = new Flat[flatsArray.length];
         for (int i = 0; i < flatsArray.length; ++i)
         {
-            floor[i] = new Flat(flatsArray[i].getSquare(), flatsArray[i].getRooms());
+            floor[i] = new Flat(flatsArray[i].getSquare(), flatsArray[i].getRoomsAmount());
         }
     }
 
-    public int getFlats()
+    public int getFloorSize()
     {
         return floor.length;
     }
 
-    public double getSquare()
+    public double getSquareAmount()
     {
         double sumSquare = 0;
-        for (Flat current : floor)
+        for (Space current : floor)
         {
             sumSquare += current.getSquare();
         }
         return sumSquare;
     }
 
-    public int getRooms()
+    public int getRoomsAmount()
     {
         int sumRooms = 0;
-        for (Flat current : floor)
+        for (Space current : floor)
         {
-            sumRooms += current.getRooms();
+            sumRooms += current.getRoomsAmount();
         }
         return sumRooms;
     }
@@ -62,61 +66,59 @@ public class DwellingFloor
         Flat[] forReturn = new Flat[floor.length];
         for (int i = 0; i < floor.length; ++i)
         {
-            forReturn[i] = new Flat(floor[i].getSquare(), floor[i].getRooms());
+            forReturn[i] = new Flat(floor[i].getSquare(), floor[i].getRoomsAmount());
         }
         return forReturn;
     }
 
-    public Flat getFlat(int flatIndex)
+    public Flat getSpace(int flatIndex) throws SpaceIndexOutOfBoundsException
     {
+        if(flatIndex >= floor.length)
+            throw new SpaceIndexOutOfBoundsException(flatIndex, floor.length - 1);
         //Flat forReturn = new Flat(floor[flatIndex].getSquare(), floor[flatIndex].getRoom_quantity());
         //return forReturn;
-        return new Flat(floor[flatIndex].getSquare(), floor[flatIndex].getRooms());
+        return new Flat(floor[flatIndex].getSquare(), floor[flatIndex].getRoomsAmount());
     }
 
-    public void changeFlat(int flatNum, Flat newFlat)
+
+    public void changeSpace(int num, Space newSpace) throws SpaceIndexOutOfBoundsException
     {
-        if (flatNum >= floor.length)
-        {
-            System.out.println("ERROR: invalid number");
-            return;
-        }
-        floor[flatNum] = new Flat(newFlat.getSquare(), newFlat.getRooms());
+        if(num >= floor.length)
+            throw new SpaceIndexOutOfBoundsException(num, floor.length - 1);
+
+        floor[num] = new Flat(newSpace.getSquare(), newSpace.getRoomsAmount());
     }
 
-    public void addFlat(int flatNum, Flat newFlat)
+    public void addSpace(int num, Space newSpace) throws SpaceIndexOutOfBoundsException
     {
-        if (flatNum > floor.length + 1)
-        {
-            System.out.println("ERROR: there are less flats that needed");
-            return;
-        }
-        Flat[] newFloor = new Flat[floor.length + 1];
-        for (int i = 0; i < flatNum + 1; ++i)
+        if(num > floor.length)
+            throw new SpaceIndexOutOfBoundsException(num, floor.length);
+
+        Space[] newFloor = new Space[floor.length + 1];
+        for (int i = 0; i < num + 1; ++i)
         {
 
-            if (i == flatNum)
+            if (i == num)
             {
-                newFloor[i] = newFlat;
+                newFloor[i] = new Flat(newSpace.getSquare(), newSpace.getRoomsAmount());
                 break;
             }
             newFloor[i] = floor[i];
         }
-        for (int i = flatNum + 1; i < newFloor.length; ++i)
+        for (int i = num + 1; i < newFloor.length; ++i)
         {
             newFloor[i] = floor[i - 1];
         }
         floor = newFloor;
     }
 
-    public void deleteFlat(int flatNum)
+    public void deleteSpace(int flatNum) throws SpaceIndexOutOfBoundsException
     {
-        if (flatNum > floor.length - 1)
-        {
-            System.out.println("ERROR: invalid number");
-            return;
-        }
-        Flat[] newFloor = new Flat[floor.length - 1];
+        if(flatNum >= floor.length)
+            throw new SpaceIndexOutOfBoundsException(flatNum, floor.length - 1);
+
+
+        Space[] newFloor = new Flat[floor.length - 1];
         for (int i = 0; i < flatNum; ++i)
         {
             newFloor[i] = floor[i];
@@ -128,7 +130,7 @@ public class DwellingFloor
         floor = newFloor;
     }
 
-    public Flat getBestSpace()
+    public Space getBestSpace()
     {
         int indexOfMax = 0;
         double maxSquare = floor[0].getSquare();
@@ -140,15 +142,6 @@ public class DwellingFloor
                 indexOfMax = i;
             }
         }
-        return new Flat(floor[indexOfMax].getSquare(), floor[indexOfMax].getRooms());
-    }
-
-    public void print()
-    {
-        System.out.println("dwellingfloor: ");
-        for (Flat cur : floor)
-        {
-            cur.Print();
-        }
+        return new Flat(floor[indexOfMax].getSquare(), floor[indexOfMax].getRoomsAmount());
     }
 }
