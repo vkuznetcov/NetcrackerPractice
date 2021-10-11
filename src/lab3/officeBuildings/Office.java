@@ -6,13 +6,12 @@ import lab3.officeBuildings.interfaces.Space;
 
 public class Office implements Space
 {
-    //fields
-    private int rooms;
-    private double square;
-
     //constants
     public static final double SQUARE = 250;
     public static final int ROOMS = 1;
+    //fields
+    private int rooms;
+    private double square;
 
     public Office()
     {
@@ -22,23 +21,30 @@ public class Office implements Space
 
     public Office(double square) throws InvalidSpaceAreaException
     {
-        if(square <= 0 || square > 250)
+        if (square <= 0 || square > 250)
+        {
             throw new InvalidSpaceAreaException(square);
+        }
         this.square = square;
         rooms = ROOMS;
     }
 
     public Office(int rooms, double square) throws IllegalArgumentException
     {
-        if(square <= 0 || square > SQUARE)
+        if (square <= 0 || square > SQUARE)
+        {
             throw new InvalidSpaceAreaException(square);
-        if(rooms <= 0 || rooms > ROOMS)
+        }
+        if (rooms <= 0 || rooms > ROOMS)
+        {
             throw new InvalidRoomsCountException(rooms);
+        }
         this.rooms = rooms;
         this.square = square;
     }
 
-    public Office(Space newOffice){
+    public Office(Space newOffice)
+    {
         rooms = newOffice.getRoomsAmount();
         square = newOffice.getSquare();
     }

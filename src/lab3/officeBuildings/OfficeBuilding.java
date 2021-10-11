@@ -1,7 +1,6 @@
 package lab3.officeBuildings;
 
 import lab2.buildings.Dwelling;
-import lab2.buildings.Flat;
 import lab3.officeBuildings.exceptions.FloorIndexOutOfBoundsException;
 import lab3.officeBuildings.exceptions.InvalidSpacesNumberException;
 import lab3.officeBuildings.exceptions.SpaceIndexOutOfBoundsException;
@@ -14,6 +13,20 @@ import lab3.officeBuildings.lists.officeFloorList.LinkListNode;
 public class OfficeBuilding implements Building
 {
     LinkList floors;
+
+    public OfficeBuilding(int floorsSize, int... officesSize) throws InvalidSpacesNumberException
+    {
+        if (officesSize.length != floorsSize)
+        {
+            throw new InvalidSpacesNumberException(officesSize.length, floorsSize);
+        }
+        floors = new LinkList(floorsSize);
+        for (int i = 0; i < officesSize.length; ++i)
+        {
+            floors.changeByNum(i, new OfficeFloor(officesSize[i]));
+        }
+
+    }
 
     private LinkListNode getNode(int num)
     {
@@ -30,17 +43,6 @@ public class OfficeBuilding implements Building
         floors.deleteByNum(num);
     }
 
-    public OfficeBuilding(int floorsSize, int... officesSize) throws InvalidSpacesNumberException
-    {
-        if(officesSize.length != floorsSize)
-            throw new InvalidSpacesNumberException(officesSize.length, floorsSize);
-        floors = new LinkList(floorsSize);
-        for(int i = 0; i < officesSize.length; ++i){
-            floors.changeByNum(i, new OfficeFloor(officesSize[i]));
-        }
-
-    }
-
     public int getFloorsAmount()
     {
         return floors.length();
@@ -50,8 +52,9 @@ public class OfficeBuilding implements Building
     {
         int officesAmount = 0;
 
-        for(int i = 0; i < floors.length(); ++i ){
-            officesAmount +=floors.getByNum(i).data.getFloorSize();
+        for (int i = 0; i < floors.length(); ++i)
+        {
+            officesAmount += floors.getByNum(i).data.getFloorSize();
         }
 
         return officesAmount;
@@ -61,7 +64,8 @@ public class OfficeBuilding implements Building
     {
         double squareAmount = 0;
 
-        for(int i = 0; i < floors.length(); ++i){
+        for (int i = 0; i < floors.length(); ++i)
+        {
             squareAmount += floors.getByNum(i).data.getSquareAmount();
         }
 
@@ -72,7 +76,8 @@ public class OfficeBuilding implements Building
     {
         int roomsAmount = 0;
 
-        for(int i = 0; i < floors.length(); ++i){
+        for (int i = 0; i < floors.length(); ++i)
+        {
             roomsAmount += floors.getByNum(i).data.getRoomsAmount();
         }
 
@@ -93,27 +98,34 @@ public class OfficeBuilding implements Building
 
     public Floor getFloor(int num) throws FloorIndexOutOfBoundsException
     {
-        if(num >= floors.length())
+        if (num >= floors.length())
+        {
             throw new FloorIndexOutOfBoundsException(num, floors.length() - 1);
+        }
 
         return new OfficeFloor(floors.getByNum(num).data.getFloor());
     }
 
-    public void changeFloor(int num, Floor newFloor)  throws FloorIndexOutOfBoundsException
+    public void changeFloor(int num, Floor newFloor) throws FloorIndexOutOfBoundsException
     {
-        if(num >= floors.length())
+        if (num >= floors.length())
+        {
             throw new FloorIndexOutOfBoundsException(num, floors.length() - 1);
+        }
 
         floors.changeByNum(num, newFloor);
     }
 
     public Space getSpace(int officeNumber) throws SpaceIndexOutOfBoundsException
     {
-        if(officeNumber >= this.getSpacesAmount())
+        if (officeNumber >= this.getSpacesAmount())
+        {
             throw new SpaceIndexOutOfBoundsException(officeNumber, this.getSpacesAmount() - 1);
+        }
 
         int floorNumber = 0;
-        for (floorNumber = 0; floorNumber < floors.length() && officeNumber > floors.getByNum(floorNumber).data.getFloorSize(); ++floorNumber)
+        for (floorNumber = 0; floorNumber < floors.length() &&
+                officeNumber > floors.getByNum(floorNumber).data.getFloorSize(); ++floorNumber)
         {
             officeNumber -= floors.getByNum(floorNumber).data.getFloorSize();
         }
@@ -123,11 +135,14 @@ public class OfficeBuilding implements Building
 
     public void changeSpace(int num, Space newSpace) throws SpaceIndexOutOfBoundsException
     {
-        if(num >= this.getSpacesAmount())
+        if (num >= this.getSpacesAmount())
+        {
             throw new SpaceIndexOutOfBoundsException(num, this.getSpacesAmount() - 1);
+        }
 
         int floorNumber = 0;
-        for (floorNumber = 0; floorNumber < floors.length() && num > floors.getByNum(floorNumber).data.getFloorSize(); ++floorNumber)
+        for (floorNumber = 0;
+             floorNumber < floors.length() && num > floors.getByNum(floorNumber).data.getFloorSize(); ++floorNumber)
         {
             num -= floors.getByNum(floorNumber).data.getFloorSize();
         }
@@ -137,11 +152,14 @@ public class OfficeBuilding implements Building
 
     public void addSpace(int num, Space newSpace) throws SpaceIndexOutOfBoundsException
     {
-        if(num > this.getSpacesAmount())
+        if (num > this.getSpacesAmount())
+        {
             throw new SpaceIndexOutOfBoundsException(num, this.getSpacesAmount());
+        }
 
         int floorNumber = 0;
-        for (floorNumber = 0; floorNumber < floors.length() && num > floors.getByNum(floorNumber).data.getFloorSize(); ++floorNumber)
+        for (floorNumber = 0;
+             floorNumber < floors.length() && num > floors.getByNum(floorNumber).data.getFloorSize(); ++floorNumber)
         {
             num -= floors.getByNum(floorNumber).data.getFloorSize();
         }
@@ -151,11 +169,14 @@ public class OfficeBuilding implements Building
 
     public void deleteSpace(int num) throws SpaceIndexOutOfBoundsException
     {
-        if(num >= this.getSpacesAmount())
+        if (num >= this.getSpacesAmount())
+        {
             throw new SpaceIndexOutOfBoundsException(num, this.getSpacesAmount() - 1);
+        }
 
         int floorNumber = 0;
-        for (floorNumber = 0; floorNumber < floors.length() && num > floors.getByNum(floorNumber).data.getFloorSize(); ++floorNumber)
+        for (floorNumber = 0;
+             floorNumber < floors.length() && num > floors.getByNum(floorNumber).data.getFloorSize(); ++floorNumber)
         {
             num -= floors.getByNum(floorNumber).data.getFloorSize();
         }
@@ -167,9 +188,12 @@ public class OfficeBuilding implements Building
     {
         Space forReturn = new Office(floors.getByNum(0).data.getBestSpace());
 
-        for(int i = 1; i < floors.length(); i++){
-            if(forReturn.getSquare() < floors.getByNum(i).data.getBestSpace().getSquare())
+        for (int i = 1; i < floors.length(); i++)
+        {
+            if (forReturn.getSquare() < floors.getByNum(i).data.getBestSpace().getSquare())
+            {
                 forReturn = floors.getByNum(i).data.getBestSpace();
+            }
         }
 
         return forReturn;

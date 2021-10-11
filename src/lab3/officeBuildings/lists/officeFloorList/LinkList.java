@@ -1,9 +1,7 @@
 package lab3.officeBuildings.lists.officeFloorList;
 
-import lab3.officeBuildings.Office;
 import lab3.officeBuildings.OfficeFloor;
 import lab3.officeBuildings.interfaces.Floor;
-import lab3.officeBuildings.interfaces.Space;
 
 public class LinkList
 {

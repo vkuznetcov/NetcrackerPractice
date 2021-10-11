@@ -10,21 +10,6 @@ public class OfficeFloor implements Floor
 {
     ArrList floor;
 
-    private ArrListNode getNode(int num)
-    {
-        return floor.getByNum(num);
-    }
-
-    private void addNode(int num, ArrListNode newNode)
-    {
-        floor.addByNum(num, newNode.data);
-    }
-
-    private void deleteNode(int num)
-    {
-        floor.deleteByNum(num);
-    }
-
     public OfficeFloor()
     {
         floor = new ArrList();
@@ -42,6 +27,21 @@ public class OfficeFloor implements Floor
         {
             floor.pushBack(officeArray[i]);
         }
+    }
+
+    private ArrListNode getNode(int num)
+    {
+        return floor.getByNum(num);
+    }
+
+    private void addNode(int num, ArrListNode newNode)
+    {
+        floor.addByNum(num, newNode.data);
+    }
+
+    private void deleteNode(int num)
+    {
+        floor.deleteByNum(num);
     }
 
     public int getFloorSize()
@@ -83,30 +83,38 @@ public class OfficeFloor implements Floor
 
     public Space getSpace(int num) throws SpaceIndexOutOfBoundsException
     {
-        if(num >= floor.length())
+        if (num >= floor.length())
+        {
             throw new SpaceIndexOutOfBoundsException(num, floor.length() - 1);
+        }
         return new Office(floor.getByNum(num).data.getRoomsAmount(), floor.getByNum(num).data.getSquare());
     }
 
     public void changeSpace(int num, Space newSpace) throws SpaceIndexOutOfBoundsException
     {
-        if(num >= floor.length())
+        if (num >= floor.length())
+        {
             throw new SpaceIndexOutOfBoundsException(num, floor.length() - 1);
+        }
         floor.changeByNum(num, newSpace);
     }
 
     public void addSpace(int num, Space newSpace) throws SpaceIndexOutOfBoundsException
     {
-        if(num > floor.length())
+        if (num > floor.length())
+        {
             throw new SpaceIndexOutOfBoundsException(num, floor.length());
+        }
         this.addNode(num, new ArrListNode(newSpace));
         //floor.addByNum(num, newSpace);
     }
 
     public void deleteSpace(int num) throws SpaceIndexOutOfBoundsException
     {
-        if(num >= floor.length())
+        if (num >= floor.length())
+        {
             throw new SpaceIndexOutOfBoundsException(num, floor.length() - 1);
+        }
         floor.deleteByNum(num);
     }
 

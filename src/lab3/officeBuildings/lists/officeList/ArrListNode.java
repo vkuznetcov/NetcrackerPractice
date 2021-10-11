@@ -1,7 +1,7 @@
 package lab3.officeBuildings.lists.officeList;
 
-import lab3.officeBuildings.interfaces.Space;
 import lab3.officeBuildings.Office;
+import lab3.officeBuildings.interfaces.Space;
 
 public class ArrListNode
 {
