@@ -12,14 +12,16 @@ public class ArrList
     {
         head = new ArrListNode();
         head.next = head;
+        size++;
     }
 
     public ArrList(int size)
     {
-        this.size = size;
+        this.size++;
         head = new ArrListNode();
+        head.next = head;
 
-        for (int i = 0; i < size; ++i)
+        for (int i = 0; i < size - 1; ++i)
         {
             this.pushBack(new Office());
         }

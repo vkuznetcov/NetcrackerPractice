@@ -15,14 +15,17 @@ public class LinkList
         head = new LinkListNode();
         head.next = head;
         head.prev = head;
+        size++;
     }
 
     public LinkList(int size)
     {
-        this.size = size;
+        this.size++;
         head = new LinkListNode();
+        head.next = head;
+        head.prev = head;
 
-        for (int i = 0; i < size; ++i)
+        for (int i = 0; i < size - 1; ++i)
         {
             this.pushBack(new OfficeFloor());
         }
@@ -46,6 +49,7 @@ public class LinkList
         head.next = new LinkListNode(newFloor);
         head.next.prev = head;
         head.next.next = tmp;
+        tmp.prev = head.next;
         head = tmp;
         ++size;
     }
@@ -133,8 +137,14 @@ public class LinkList
 
     public void changeByNum(int num, Floor newFloor)
     {
+        if(num == 0){
+            this.popFront();
+            this.pushFront(newFloor);
+            return;
+        }
+
         LinkListNode tmp = head;
-        for (int i = 0; i < num; ++i)
+        for (int i = 0; i < num - 1; ++i)
         {
             tmp = tmp.next;
         }

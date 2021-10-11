@@ -3,6 +3,7 @@ package lab3.officeBuildings;
 import lab2.buildings.Dwelling;
 import lab2.buildings.Flat;
 import lab3.officeBuildings.exceptions.FloorIndexOutOfBoundsException;
+import lab3.officeBuildings.exceptions.InvalidSpacesNumberException;
 import lab3.officeBuildings.exceptions.SpaceIndexOutOfBoundsException;
 import lab3.officeBuildings.interfaces.Building;
 import lab3.officeBuildings.interfaces.Floor;
@@ -29,8 +30,10 @@ public class OfficeBuilding implements Building
         floors.deleteByNum(num);
     }
 
-    public OfficeBuilding(int floorsSize, int... officesSize)
+    public OfficeBuilding(int floorsSize, int... officesSize) throws InvalidSpacesNumberException
     {
+        if(officesSize.length != floorsSize)
+            throw new InvalidSpacesNumberException(officesSize.length, floorsSize);
         floors = new LinkList(floorsSize);
         for(int i = 0; i < officesSize.length; ++i){
             floors.changeByNum(i, new OfficeFloor(officesSize[i]));

@@ -28,7 +28,7 @@ public class Office implements Space
         rooms = ROOMS;
     }
 
-    public Office(int rooms, double square) throws InvalidSpaceAreaException, InvalidRoomsCountException
+    public Office(int rooms, double square) throws IllegalArgumentException
     {
         if(square <= 0 || square > SQUARE)
             throw new InvalidSpaceAreaException(square);

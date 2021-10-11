@@ -30,7 +30,7 @@ public class Flat implements Space
         rooms = 2;
     }
 
-    public Flat(double squareValue, int roomValue) throws InvalidSpaceAreaException, InvalidRoomsCountException
+    public Flat(double squareValue, int roomValue) throws IllegalArgumentException
     {
         if(squareValue <= 0 || squareValue > Office.SQUARE)
             throw new InvalidSpaceAreaException(square);
