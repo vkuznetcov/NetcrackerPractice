@@ -3,7 +3,9 @@ package lab3.officeBuildings.lists.officeList;
 import lab3.officeBuildings.Office;
 import lab3.officeBuildings.interfaces.Space;
 
-public class ArrList
+import java.io.Serializable;
+
+public class ArrList implements Serializable
 {
     private ArrListNode head;
     private int size = 0;

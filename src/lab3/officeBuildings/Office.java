@@ -4,7 +4,10 @@ import lab3.officeBuildings.exceptions.InvalidRoomsCountException;
 import lab3.officeBuildings.exceptions.InvalidSpaceAreaException;
 import lab3.officeBuildings.interfaces.Space;
 
-public class Office implements Space
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
+public class Office implements Space, java.io.Serializable
 {
     //constants
     public static final double SQUARE = 250;
@@ -21,7 +24,7 @@ public class Office implements Space
 
     public Office(double square) throws InvalidSpaceAreaException
     {
-        if (square <= 0 || square > 250)
+        if (square <= 0 || square > SQUARE)
         {
             throw new InvalidSpaceAreaException(square);
         }
@@ -68,4 +71,10 @@ public class Office implements Space
     {
         this.square = square;
     }
+
+//    private void writeObject(ObjectOutputStream stream) throws IOException
+//    {
+//        stream.defaultWriteObject();
+//        System.out.println("Our writeObject");
+//    }
 }

@@ -3,7 +3,9 @@ package lab3.officeBuildings.lists.officeFloorList;
 import lab3.officeBuildings.OfficeFloor;
 import lab3.officeBuildings.interfaces.Floor;
 
-public class LinkList
+import java.io.Serializable;
+
+public class LinkList implements Serializable
 {
     LinkListNode head;
     int size = 0;

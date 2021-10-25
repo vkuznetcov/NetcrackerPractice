@@ -5,7 +5,9 @@ import lab3.officeBuildings.exceptions.InvalidRoomsCountException;
 import lab3.officeBuildings.exceptions.InvalidSpaceAreaException;
 import lab3.officeBuildings.interfaces.Space;
 
-public class Flat implements Space
+import java.io.Serializable;
+
+public class Flat implements Space, Serializable
 {
     private double square;
     private int rooms;

@@ -6,9 +6,9 @@ import lab3.officeBuildings.interfaces.Space;
 import lab3.officeBuildings.lists.officeList.ArrList;
 import lab3.officeBuildings.lists.officeList.ArrListNode;
 
-public class OfficeFloor implements Floor
+public class OfficeFloor implements Floor, java.io.Serializable
 {
-    ArrList floor;
+    private ArrList floor;
 
     public OfficeFloor()
     {
@@ -90,7 +90,7 @@ public class OfficeFloor implements Floor
         return new Office(floor.getByNum(num).data.getRoomsAmount(), floor.getByNum(num).data.getSquare());
     }
 
-    public void changeSpace(int num, Space newSpace) throws SpaceIndexOutOfBoundsException
+    public void setSpace(int num, Space newSpace) throws SpaceIndexOutOfBoundsException
     {
         if (num >= floor.length())
         {

@@ -10,9 +10,12 @@ import lab3.officeBuildings.interfaces.Space;
 import lab3.officeBuildings.lists.officeFloorList.LinkList;
 import lab3.officeBuildings.lists.officeFloorList.LinkListNode;
 
-public class OfficeBuilding implements Building
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
+public class OfficeBuilding implements Building, java.io.Serializable
 {
-    LinkList floors;
+    private LinkList floors;
 
     public OfficeBuilding(int floorsSize, int... officesSize) throws InvalidSpacesNumberException
     {
@@ -26,6 +29,13 @@ public class OfficeBuilding implements Building
             floors.changeByNum(i, new OfficeFloor(officesSize[i]));
         }
 
+    }
+
+    public OfficeBuilding(Floor... floors){
+        this.floors = new LinkList(new LinkListNode(floors[0]));
+        for(int i = 1; i < floors.length; ++i){
+            this.floors.pushBack(floors[i]);
+        }
     }
 
     private LinkListNode getNode(int num)
@@ -106,7 +116,7 @@ public class OfficeBuilding implements Building
         return new OfficeFloor(floors.getByNum(num).data.getFloor());
     }
 
-    public void changeFloor(int num, Floor newFloor) throws FloorIndexOutOfBoundsException
+    public void setFloor(int num, Floor newFloor) throws FloorIndexOutOfBoundsException
     {
         if (num >= floors.length())
         {
@@ -133,7 +143,7 @@ public class OfficeBuilding implements Building
         return new Office(floors.getByNum(floorNumber).data.getSpace(floorNumber));
     }
 
-    public void changeSpace(int num, Space newSpace) throws SpaceIndexOutOfBoundsException
+    public void setSpace(int num, Space newSpace) throws SpaceIndexOutOfBoundsException
     {
         if (num >= this.getSpacesAmount())
         {
@@ -147,7 +157,7 @@ public class OfficeBuilding implements Building
             num -= floors.getByNum(floorNumber).data.getFloorSize();
         }
 
-        floors.getByNum(floorNumber).data.changeSpace(num, newSpace);
+        floors.getByNum(floorNumber).data.setSpace(num, newSpace);
     }
 
     public void addSpace(int num, Space newSpace) throws SpaceIndexOutOfBoundsException
@@ -216,4 +226,10 @@ public class OfficeBuilding implements Building
         Dwelling.sort(forReturn);
         return forReturn;
     }
+
+//    private void writeObject(ObjectOutputStream stream) throws IOException
+//    {
+//        stream.defaultWriteObject();
+//        System.out.println("Our writeObject");
+//    }
 }

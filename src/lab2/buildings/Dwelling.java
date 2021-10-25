@@ -6,7 +6,9 @@ import lab3.officeBuildings.interfaces.Building;
 import lab3.officeBuildings.interfaces.Floor;
 import lab3.officeBuildings.interfaces.Space;
 
-public class Dwelling implements Building
+import java.io.Serializable;
+
+public class Dwelling implements Building, Serializable
 {
     private Floor[] floors;
 
@@ -96,7 +98,7 @@ public class Dwelling implements Building
         return new DwellingFloor(floors[floorNumber].getFloor());
     }
 
-    public void changeFloor(int floorNumber, Floor newFloor) throws FloorIndexOutOfBoundsException
+    public void setFloor(int floorNumber, Floor newFloor) throws FloorIndexOutOfBoundsException
     {
         if(floorNumber >= floors.length)
             throw new FloorIndexOutOfBoundsException(floorNumber, floors.length - 1);
@@ -119,7 +121,7 @@ public class Dwelling implements Building
                         floors[floorNumber].getSpace(flatNumber).getRoomsAmount());
     }
 
-    public void changeSpace(int flatNumber, Space newFlat) throws SpaceIndexOutOfBoundsException
+    public void setSpace(int flatNumber, Space newFlat) throws SpaceIndexOutOfBoundsException
     {
         if(flatNumber >= this.getSpacesAmount())
             throw new SpaceIndexOutOfBoundsException(flatNumber, this.getSpacesAmount() - 1);
@@ -131,7 +133,7 @@ public class Dwelling implements Building
             flatNumber -= floors[floorNumber].getFloorSize();
         }
 
-        floors[floorNumber].changeSpace(flatNumber, newFlat);
+        floors[floorNumber].setSpace(flatNumber, newFlat);
     }
 
     public void addSpace(int flatNumber, Space newFlat) throws SpaceIndexOutOfBoundsException

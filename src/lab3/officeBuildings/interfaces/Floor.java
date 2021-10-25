@@ -13,7 +13,7 @@ public interface Floor
 
     Space getSpace(int num);
 
-    void changeSpace(int num, Space newSpace);
+    void setSpace(int num, Space newSpace);
 
     void addSpace(int num, Space newSpace);
 

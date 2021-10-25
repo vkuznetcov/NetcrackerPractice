@@ -4,7 +4,9 @@ import lab3.officeBuildings.exceptions.SpaceIndexOutOfBoundsException;
 import lab3.officeBuildings.interfaces.Floor;
 import lab3.officeBuildings.interfaces.Space;
 
-public class DwellingFloor implements Floor
+import java.io.Serializable;
+
+public class DwellingFloor implements Floor, Serializable
 {
     private Space[] floor;
 
@@ -81,7 +83,7 @@ public class DwellingFloor implements Floor
     }
 
 
-    public void changeSpace(int num, Space newSpace) throws SpaceIndexOutOfBoundsException
+    public void setSpace(int num, Space newSpace) throws SpaceIndexOutOfBoundsException
     {
         if(num >= floor.length)
             throw new SpaceIndexOutOfBoundsException(num, floor.length - 1);
