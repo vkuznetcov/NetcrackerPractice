@@ -1,5 +1,6 @@
 package lab2.buildings;
 
+import lab3.officeBuildings.Office;
 import lab3.officeBuildings.exceptions.SpaceIndexOutOfBoundsException;
 import lab3.officeBuildings.interfaces.Floor;
 import lab3.officeBuildings.interfaces.Space;
@@ -145,5 +146,53 @@ public class DwellingFloor implements Floor, Serializable
             }
         }
         return new Flat(floor[indexOfMax].getSquare(), floor[indexOfMax].getRoomsAmount());
+    }
+
+    @Override
+    public String toString(){
+        StringBuffer forreturn = new StringBuffer("Dwelling Floor(");
+        for(int i = 0; i < getFloorSize(); i++){
+            if(i == getFloorSize() - 1)
+            {
+                forreturn.append(floor[i].toString());
+                break;
+            }
+            forreturn.append(floor[i].toString() + ", ");
+        }
+        forreturn.append(")");
+        return forreturn.toString();
+    }
+
+    @Override
+    public boolean equals(Object object){
+        if(object instanceof DwellingFloor){
+            if(getFloorSize()!=((DwellingFloor) object).getFloorSize())
+                return false;
+            for(int i = 0; i < getFloorSize(); i++){
+                if(!getSpace(i).equals(((DwellingFloor) object).getSpace(i)))
+                    return false;
+            }
+            return true;
+        }
+        else return false;
+    }
+
+    @Override
+    public Object clone()
+    {
+        DwellingFloor forreturn = new DwellingFloor(getFloorSize());
+        for(int i = 0; i < forreturn.getFloorSize(); i++){
+            forreturn.setSpace(i, (Space)getSpace(i).clone());
+        }
+        return forreturn;
+    }
+
+    @Override
+    public int hashCode(){
+        int result = 0;
+        for(int i = 0; i < getFloorSize(); ++i){
+            result += getFloorSize() ^ getSpace(i).hashCode();
+        }
+        return result;
     }
 }

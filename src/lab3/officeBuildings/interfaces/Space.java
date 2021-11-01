@@ -9,4 +9,6 @@ public interface Space
     double getSquare();
 
     void setSquare(double newSquare);
+
+    Object clone();
 }

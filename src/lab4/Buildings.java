@@ -17,7 +17,8 @@ public class Buildings
 {
     public static void outputBuilding(Building building, OutputStream out) throws IOException
     {
-        try(DataOutputStream outputStream = new DataOutputStream(out);)
+        DataOutputStream outputStream = new DataOutputStream(out);
+        try
         {
             outputStream.writeInt(building.getFloorsAmount());
 
@@ -39,7 +40,8 @@ public class Buildings
 
     public static Building inputBuilding(InputStream in) throws IOException
     {
-        try(DataInputStream inputStream = new DataInputStream(in);)
+        DataInputStream inputStream = new DataInputStream(in);
+        try
         {
             Floor[] build = new Floor[inputStream.readInt()];
             for (int i = 0; i < build.length; i++)
@@ -64,7 +66,8 @@ public class Buildings
 
     public static void writeBuilding(Building building, Writer out) throws IOException
     {
-        try(BufferedWriter writer = new BufferedWriter(out);)
+        BufferedWriter writer = new BufferedWriter(out);
+        try
         {
 
             writer.write(building.getFloorsAmount() + " ");
@@ -74,7 +77,7 @@ public class Buildings
                 writer.write(building.getFloor(i).getFloorSize() + " ");
                 for (int j = 0; j < building.getFloor(i).getFloorSize(); j++)
                 {
-                    writer.write(building.getFloor(i).getSpace(j).getRoomsAmount()+ " ");
+                    writer.write(building.getFloor(i).getSpace(j).getRoomsAmount() + " ");
                     writer.write(building.getFloor(i).getSpace(j).getSquare() + " ");
                 }
             }
@@ -88,19 +91,19 @@ public class Buildings
 
     public static Building readBuilding(Reader in)
     {
-        try(BufferedReader read = new BufferedReader(in))
+        StreamTokenizer tokenizer = new StreamTokenizer(in);
+        try
         {
-            StreamTokenizer tokenizer = new StreamTokenizer(in);
             tokenizer.nextToken();
             Floor[] build = new Floor[(int) tokenizer.nval];
             for (int i = 0; i < build.length; i++)
             {
                 tokenizer.nextToken();
-                build[i] = new OfficeFloor((int)tokenizer.nval);
+                build[i] = new OfficeFloor((int) tokenizer.nval);
                 for (int j = 0; j < build[i].getFloorSize(); j++)
                 {
                     tokenizer.nextToken();
-                    int rooms = (int)tokenizer.nval;
+                    int rooms = (int) tokenizer.nval;
                     tokenizer.nextToken();
                     double square = tokenizer.nval;
                     build[i].setSpace(j, new Flat(square, rooms));
@@ -115,16 +118,17 @@ public class Buildings
         return null;
     }
 
-    public static void serializeBuilding (Building building, OutputStream out) throws IOException
+    public static void serializeBuilding(Building building, OutputStream out) throws IOException
     {
-        try(ObjectOutputStream outputStream = new ObjectOutputStream(out);)
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(out);)
         {
             outputStream.writeObject(building);
         }
     }
 
-    public static Building deserializeBuilding (InputStream in){
-        try(ObjectInputStream inputStream = new ObjectInputStream(in);)
+    public static Building deserializeBuilding(InputStream in)
+    {
+        try (ObjectInputStream inputStream = new ObjectInputStream(in);)
         {
             return (Building) inputStream.readObject();
         }
@@ -135,9 +139,10 @@ public class Buildings
         return null;
     }
 
-    public static void writeBuildingFormat(Building building, Writer out){
-        Formatter formatter = new Formatter();
-        try(PrintWriter writer = new PrintWriter(out);)
+    public static void writeBuildingFormat(Building building, Writer out)
+    {
+        Formatter formatter = new Formatter(out);
+        try
         {
             formatter.format("Building floors amount: %d\n\n", building.getFloorsAmount());
 
@@ -151,18 +156,31 @@ public class Buildings
                     formatter.format("Square amount: %.2f\n\n", building.getFloor(i).getSpace(j).getSquare());
                 }
             }
-            writer.println(formatter);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            formatter.close();
         }
     }
 
-    public static Building readBuilding(Scanner scanner){
+    public static Building readBuilding(Scanner scanner)
+    {
         try
         {
             scanner.useLocale(Locale.US);
             Floor[] build;
-            if(scanner.hasNext())
-                build = new Floor[(int)scanner.nextInt()];
-            else return null;
+            if (scanner.hasNext())
+            {
+                build = new Floor[(int) scanner.nextInt()];
+            }
+            else
+            {
+                return null;
+            }
             for (int i = 0; i < build.length; i++)
             {
                 build[i] = new OfficeFloor(scanner.nextInt());
@@ -175,7 +193,7 @@ public class Buildings
             }
             return new OfficeBuilding(build);
         }
-        catch (IllegalArgumentException  | InputMismatchException e)
+        catch (IllegalArgumentException | InputMismatchException e)
         {
             e.printStackTrace();
         }

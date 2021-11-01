@@ -1,5 +1,7 @@
 package lab3.officeBuildings;
 
+import lab2.buildings.DwellingFloor;
+import lab2.buildings.Flat;
 import lab3.officeBuildings.exceptions.SpaceIndexOutOfBoundsException;
 import lab3.officeBuildings.interfaces.Floor;
 import lab3.officeBuildings.interfaces.Space;
@@ -130,5 +132,55 @@ public class OfficeFloor implements Floor, java.io.Serializable
             }
         }
         return forReturn;
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuffer forreturn = new StringBuffer("Office Floor(");
+        for (int i = 0; i < getFloorSize(); i++)
+        {
+            if (i == getFloorSize() - 1)
+            {
+                forreturn.append(getSpace(i).toString());
+                break;
+            }
+            forreturn.append(getSpace(i).toString() + ", ");
+        }
+        forreturn.append(")");
+        return forreturn.toString();
+    }
+
+    @Override
+    public boolean equals(Object object){
+        if(object instanceof OfficeFloor){
+            if(getFloorSize()!=((OfficeFloor) object).getFloorSize())
+                return false;
+            for(int i = 0; i < getFloorSize(); i++){
+                if(!getSpace(i).equals(((OfficeFloor) object).getSpace(i)))
+                    return false;
+            }
+            return true;
+        }
+        else return false;
+    }
+
+    @Override
+    public Object clone()
+    {
+        OfficeFloor forreturn = new OfficeFloor(getFloorSize());
+        for(int i = 0; i < forreturn.getFloorSize(); i++){
+            forreturn.setSpace(i, (Space)getSpace(i).clone());
+        }
+        return forreturn;
+    }
+
+    @Override
+    public int hashCode(){
+        int result = 0;
+        for(int i = 0; i < getFloorSize(); ++i){
+            result += getFloorSize() ^ getSpace(i).hashCode();
+        }
+        return result;
     }
 }

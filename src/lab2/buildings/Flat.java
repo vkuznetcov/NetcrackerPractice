@@ -6,6 +6,7 @@ import lab3.officeBuildings.exceptions.InvalidSpaceAreaException;
 import lab3.officeBuildings.interfaces.Space;
 
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 
 public class Flat implements Space, Serializable
 {
@@ -19,25 +20,26 @@ public class Flat implements Space, Serializable
         rooms = 2;
     }
 
-    public void Print()
-    {
-        System.out.println("flat: " + square + " " + rooms);
-    }
-
     public Flat(double squareValue) throws InvalidSpaceAreaException
     {
-        if(squareValue <= 0 || squareValue > Office.SQUARE)
+        if (squareValue <= 0 || squareValue > Office.SQUARE)
+        {
             throw new InvalidSpaceAreaException(squareValue);
+        }
         square = squareValue;
         rooms = 2;
     }
 
     public Flat(double squareValue, int roomValue) throws IllegalArgumentException
     {
-        if(squareValue <= 0 || squareValue > Office.SQUARE)
+        if (squareValue <= 0 || squareValue > Office.SQUARE)
+        {
             throw new InvalidSpaceAreaException(square);
-        if(roomValue <= 0 || roomValue > Office.ROOMS)
+        }
+        if (roomValue <= 0 || roomValue > Office.ROOMS)
+        {
             throw new InvalidRoomsCountException(rooms);
+        }
         square = squareValue;
         rooms = roomValue;
     }
@@ -62,4 +64,40 @@ public class Flat implements Space, Serializable
         rooms = roomValue;
     }
 
+    @Override
+    public String toString()
+    {
+        return "Flat(" + rooms + ", " + square + ")";
+    }
+
+    @Override
+    public boolean equals(Object object){
+        if(object instanceof Flat){
+            if(getRoomsAmount()!=((Flat) object).getRoomsAmount())
+                return false;
+            if(getSquare()!=((Flat) object).getSquare())
+                return false;
+            return true;
+        }
+        else return false;
+    }
+
+    @Override
+    public int hashCode(){
+        int result;
+        long doubleAsLong = Double.doubleToLongBits(square);
+        long mask1 = 0b0000000000000000000000000000000011111111111111111111111111111111L;
+        long mask2 = 0b1111111111111111111111111111111100000000000000000000000000000000L;
+        long a = doubleAsLong & mask1;
+        long b = doubleAsLong & mask2;
+        result = (int)(rooms ^ a ^ b);
+        return result;
+    }
+
+    @Override
+    public Object clone()
+    {
+        Object forreturn = new Flat(square,rooms);
+        return forreturn;
+    }
 }

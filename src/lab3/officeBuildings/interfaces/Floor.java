@@ -20,4 +20,6 @@ public interface Floor
     void deleteSpace(int num);
 
     Space getBestSpace();
+
+    Object clone();
 }

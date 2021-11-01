@@ -27,4 +27,6 @@ public interface Building
     Space getBestSpace();
 
     Space[] getSorted();
+
+    Object clone();
 }

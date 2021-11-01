@@ -1,6 +1,7 @@
 package lab3.officeBuildings;
 
 import lab2.buildings.Dwelling;
+import lab2.buildings.DwellingFloor;
 import lab3.officeBuildings.exceptions.FloorIndexOutOfBoundsException;
 import lab3.officeBuildings.exceptions.InvalidSpacesNumberException;
 import lab3.officeBuildings.exceptions.SpaceIndexOutOfBoundsException;
@@ -227,9 +228,52 @@ public class OfficeBuilding implements Building, java.io.Serializable
         return forReturn;
     }
 
-//    private void writeObject(ObjectOutputStream stream) throws IOException
-//    {
-//        stream.defaultWriteObject();
-//        System.out.println("Our writeObject");
-//    }
+    @Override
+    public String toString()
+    {
+        StringBuffer forreturn = new StringBuffer("Office Building(");
+        for (int i = 0; i < getFloorsAmount(); i++)
+        {
+            if (i == getFloorsAmount() - 1)
+            {
+                forreturn.append(getFloor(i).toString());
+                break;
+            }
+            forreturn.append(getFloor(i).toString() + ", ");
+        }
+        forreturn.append(")");
+        return forreturn.toString();
+    }
+
+    public boolean equals(Object object){
+        if(object instanceof OfficeBuilding){
+            if(getFloorsAmount()!=((OfficeBuilding) object).getFloorsAmount())
+                return false;
+            for(int i = 0; i < getFloorsAmount(); i++){
+                if(!getFloor(i).equals(((OfficeBuilding) object).getFloor(i)))
+                    return false;
+            }
+            return true;
+        }
+        else return false;
+    }
+
+    @Override
+    public Object clone()
+    {
+        OfficeBuilding forreturn = new OfficeBuilding(getFloors());
+        for(int i = 0; i < forreturn.getFloorsAmount(); i++){
+            forreturn.setFloor(i, (Floor)getFloor(i).clone());
+        }
+        return forreturn;
+    }
+
+    @Override
+    public int hashCode(){
+        int result = 0;
+        for(int i = 0; i < getFloorsAmount(); ++i){
+            result += getFloorsAmount() ^ getFloor(i).hashCode();
+        }
+        return result;
+    }
 }

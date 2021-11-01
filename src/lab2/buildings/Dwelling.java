@@ -218,4 +218,54 @@ public class Dwelling implements Building, Serializable
             }
         }
     }
+
+    @Override
+    public String toString()
+    {
+        StringBuffer forreturn = new StringBuffer("Dwelling(");
+        for (int i = 0; i < getFloorsAmount(); i++)
+        {
+            if (i == getFloorsAmount() - 1)
+            {
+                forreturn.append(getFloor(i).toString());
+                break;
+            }
+            forreturn.append(getFloor(i).toString() + ", ");
+        }
+        forreturn.append(")");
+        return forreturn.toString();
+    }
+
+    @Override
+    public boolean equals(Object object){
+        if(object instanceof Dwelling){
+            if(getFloorsAmount()!=((Dwelling) object).getFloorsAmount())
+                return false;
+            for(int i = 0; i < getFloorsAmount(); i++){
+                if(!getFloor(i).equals(((Dwelling) object).getFloor(i)))
+                    return false;
+            }
+            return true;
+        }
+        else return false;
+    }
+
+    @Override
+    public Object clone()
+    {
+        Dwelling forreturn = new Dwelling(getFloors());
+        for(int i = 0; i < forreturn.getFloorsAmount(); i++){
+            forreturn.setFloor(i, (Floor)getFloor(i).clone());
+        }
+        return forreturn;
+    }
+
+    @Override
+    public int hashCode(){
+        int result = 0;
+        for(int i = 0; i < getFloorsAmount(); ++i){
+            result += getFloorsAmount() ^ getFloor(i).hashCode();
+        }
+        return result;
+    }
 }

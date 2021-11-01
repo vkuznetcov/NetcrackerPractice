@@ -1,5 +1,6 @@
 package lab3.officeBuildings;
 
+import lab2.buildings.Flat;
 import lab3.officeBuildings.exceptions.InvalidRoomsCountException;
 import lab3.officeBuildings.exceptions.InvalidSpaceAreaException;
 import lab3.officeBuildings.interfaces.Space;
@@ -72,9 +73,41 @@ public class Office implements Space, java.io.Serializable
         this.square = square;
     }
 
-//    private void writeObject(ObjectOutputStream stream) throws IOException
-//    {
-//        stream.defaultWriteObject();
-//        System.out.println("Our writeObject");
-//    }
+    @Override
+    public String toString()
+    {
+        return "Office(" + rooms + ", " + square + ")";
+    }
+
+    @Override
+    public boolean equals(Object object){
+        if(object instanceof Office){
+            if(getRoomsAmount()!=((Office) object).getRoomsAmount())
+                return false;
+            if(getSquare()!=((Office) object).getSquare())
+                return false;
+            return true;
+        }
+        else return false;
+    }
+
+    @Override
+    public Object clone()
+    {
+        Object forreturn = new Office(rooms, square);
+        return forreturn;
+    }
+
+    @Override
+    public int hashCode(){
+        int result;
+        long doubleAsLong = Double.doubleToLongBits(square);
+        long mask1 = 0b0000000000000000000000000000000011111111111111111111111111111111L;
+        long mask2 = 0b1111111111111111111111111111111100000000000000000000000000000000L;
+        long a = doubleAsLong & mask1;
+        long b = doubleAsLong & mask2;
+        result = (int)(rooms ^ a ^ b);
+        return result;
+    }
+
 }
