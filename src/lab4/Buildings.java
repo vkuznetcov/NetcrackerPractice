@@ -1,11 +1,11 @@
 package lab4;
 
-import lab2.buildings.DwellingFloor;
-import lab2.buildings.Flat;
-import lab3.officeBuildings.Office;
-import lab3.officeBuildings.OfficeBuilding;
-import lab3.officeBuildings.OfficeFloor;
-import lab3.officeBuildings.interfaces.*;
+import buildings.dwelling.Flat;
+import buildings.interfaces.Building;
+import buildings.interfaces.Floor;
+import buildings.officeBuildings.Office;
+import buildings.officeBuildings.OfficeBuilding;
+import buildings.officeBuildings.OfficeFloor;
 
 import java.io.*;
 import java.util.Formatter;

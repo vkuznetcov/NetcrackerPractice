@@ -1,14 +1,14 @@
 
-import lab2.buildings.Flat;
-import lab3.officeBuildings.Office;
-import lab3.officeBuildings.OfficeBuilding;
-import lab3.officeBuildings.interfaces.Building;
-import lab3.officeBuildings.interfaces.Space;
-import lab4.Buildings;
-
-import java.io.*;
-import java.util.Formatter;
-import java.util.Scanner;
+import buildings.dwelling.Dwelling;
+import buildings.dwelling.DwellingFloor;
+import buildings.dwelling.Flat;
+import buildings.dwelling.hotel.Hotel;
+import buildings.dwelling.hotel.HotelFloor;
+import buildings.interfaces.Building;
+import buildings.interfaces.Floor;
+import buildings.interfaces.Space;
+import buildings.officeBuildings.Office;
+import buildings.officeBuildings.OfficeFloor;
 
 public class Main
 {
@@ -16,13 +16,15 @@ public class Main
     {
         try
         {
-            Flat test = new Flat(250, 1);
-            int res = test.hashCode();
-//            OfficeBuilding test = new OfficeBuilding(2, 2, 1);
-//            OfficeBuilding test2 = (OfficeBuilding) test.clone();
-//            System.out.println(test.equals(test2));
+            HotelFloor[] hlf = new HotelFloor[5];
+            for(int i = 0; i < hlf.length; i++){
+                hlf[i] = new HotelFloor(5);
+            }
+            Hotel hl = new Hotel(hlf);
+            Hotel hl2 = new Hotel(new HotelFloor(5));
 
-
+            System.out.println(hl.equals(hl2));
+            System.out.println(hl.toString());
         }
         catch (IllegalArgumentException | IndexOutOfBoundsException exc){
             System.out.println(exc.toString());

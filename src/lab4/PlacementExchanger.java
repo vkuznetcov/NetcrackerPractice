@@ -1,10 +1,12 @@
 package lab4;
 
-import lab3.officeBuildings.exceptions.FloorIndexOutOfBoundsException;
-import lab3.officeBuildings.exceptions.SpaceIndexOutOfBoundsException;
-import lab3.officeBuildings.interfaces.*;
-import lab4.errors.InexchangeableFloorsException;
-import lab4.errors.InexchangeableSpacesException;
+import buildings.errors.InexchangeableFloorsException;
+import buildings.errors.InexchangeableSpacesException;
+import buildings.exceptions.FloorIndexOutOfBoundsException;
+import buildings.exceptions.SpaceIndexOutOfBoundsException;
+import buildings.interfaces.Building;
+import buildings.interfaces.Floor;
+import buildings.interfaces.Space;
 
 public class PlacementExchanger
 {

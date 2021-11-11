@@ -1,4 +1,4 @@
-package lab4.errors;
+package buildings.errors;
 
 public class InexchangeableFloorsException extends RuntimeException
 {
