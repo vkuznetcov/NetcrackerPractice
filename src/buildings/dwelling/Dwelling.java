@@ -7,6 +7,7 @@ import buildings.interfaces.Floor;
 import buildings.interfaces.Space;
 
 import java.io.Serializable;
+import java.util.Iterator;
 
 public class Dwelling implements Building, Serializable
 {
@@ -266,5 +267,25 @@ public class Dwelling implements Building, Serializable
             result += getFloorsAmount() ^ getFloor(i).hashCode();
         }
         return result;
+    }
+
+    @Override
+    public Iterator<Floor> iterator()
+    {
+        return new Iterator<Floor>()
+        {
+            private int index = 0;
+            @Override
+            public boolean hasNext()
+            {
+                return index < getFloorsAmount();
+            }
+
+            @Override
+            public Floor next()
+            {
+                return getFloor(index++);
+            }
+        };
     }
 }

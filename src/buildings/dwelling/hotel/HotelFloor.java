@@ -68,5 +68,13 @@ public class HotelFloor extends DwellingFloor
         return result;
     }
 
-    //КЛОНИРОВАНИЕ
+    @Override
+    public Object clone()
+    {
+        HotelFloor forreturn = new HotelFloor(getFloorSize());
+        for(int i = 0; i < forreturn.getFloorSize(); i++){
+            forreturn.setSpace(i, (Space)getSpace(i).clone());
+        }
+        return forreturn;
+    }
 }

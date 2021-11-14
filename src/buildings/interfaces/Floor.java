@@ -1,7 +1,6 @@
 package buildings.interfaces;
 
-
-public interface Floor
+public interface Floor extends Iterable<Space>, Comparable<Floor>
 {
     int getFloorSize();
 

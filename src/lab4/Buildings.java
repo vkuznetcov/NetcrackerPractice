@@ -1,20 +1,24 @@
 package lab4;
 
+import buildings.criterions.FloorSpacesAmountComparator;
+import buildings.criterions.SpaceRoomsAmountComparator;
+import buildings.dwelling.DwellingFactory;
 import buildings.dwelling.Flat;
 import buildings.interfaces.Building;
+import buildings.interfaces.BuildingFactory;
 import buildings.interfaces.Floor;
+import buildings.interfaces.Space;
 import buildings.officeBuildings.Office;
 import buildings.officeBuildings.OfficeBuilding;
 import buildings.officeBuildings.OfficeFloor;
 
 import java.io.*;
-import java.util.Formatter;
-import java.util.InputMismatchException;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 public class Buildings
 {
+    static BuildingFactory builder = new DwellingFactory();
+
     public static void outputBuilding(Building building, OutputStream out) throws IOException
     {
         DataOutputStream outputStream = new DataOutputStream(out);
@@ -46,15 +50,15 @@ public class Buildings
             Floor[] build = new Floor[inputStream.readInt()];
             for (int i = 0; i < build.length; i++)
             {
-                build[i] = new OfficeFloor(inputStream.readInt());
+                build[i] = createFloor(inputStream.readInt());
                 for (int j = 0; j < build[i].getFloorSize(); j++)
                 {
                     int rooms = inputStream.readInt();
                     double square = inputStream.readDouble();
-                    build[i].setSpace(j, new Office(rooms, square));
+                    build[i].setSpace(j, createSpace(square, rooms));
                 }
             }
-            return new OfficeBuilding(build);
+            return createBuilding(build);
         }
         catch (IOException | IllegalArgumentException e)
         {
@@ -99,17 +103,17 @@ public class Buildings
             for (int i = 0; i < build.length; i++)
             {
                 tokenizer.nextToken();
-                build[i] = new OfficeFloor((int) tokenizer.nval);
+                build[i] = createFloor((int) tokenizer.nval);
                 for (int j = 0; j < build[i].getFloorSize(); j++)
                 {
                     tokenizer.nextToken();
                     int rooms = (int) tokenizer.nval;
                     tokenizer.nextToken();
                     double square = tokenizer.nval;
-                    build[i].setSpace(j, new Flat(square, rooms));
+                    build[i].setSpace(j, createSpace(square, rooms));
                 }
             }
-            return new OfficeBuilding(build);
+            return createBuilding(build);
         }
         catch (IOException e)
         {
@@ -183,15 +187,15 @@ public class Buildings
             }
             for (int i = 0; i < build.length; i++)
             {
-                build[i] = new OfficeFloor(scanner.nextInt());
+                build[i] = createFloor(scanner.nextInt());
                 for (int j = 0; j < build[i].getFloorSize(); j++)
                 {
                     int rooms = scanner.nextInt();
                     double square = scanner.nextDouble();
-                    build[i].setSpace(j, new Office(rooms, square));
+                    build[i].setSpace(j, createSpace(square, rooms));
                 }
             }
-            return new OfficeBuilding(build);
+            return createBuilding(build);
         }
         catch (IllegalArgumentException | InputMismatchException e)
         {
@@ -199,5 +203,113 @@ public class Buildings
         }
 
         return null;
+    }
+
+    public static void sortSpaces(Space[] forSort){
+        for(int i = 0; i < forSort.length; i++) {
+            for (int j = 0; j < forSort.length - i - 1; j++) {
+                Space tmp;
+                if(forSort[j].compareTo(forSort[j+1]) > 0){
+                    tmp = forSort[j];
+                    forSort[j] = forSort[j + 1];
+                    forSort[j + 1] = tmp;
+                }
+            }
+        }
+    }
+
+    public static void sortFloors(Floor[] forSort){
+        for(int i = 0; i < forSort.length; i++) {
+            for (int j = 0; j < forSort.length - i - 1; j++) {
+                Floor tmp;
+                if(forSort[j].compareTo(forSort[j+1]) > 0){
+                    tmp = forSort[j];
+                    forSort[j] = forSort[j + 1];
+                    forSort[j + 1] = tmp;
+                }
+            }
+        }
+    }
+
+    public static <T extends Comparable<T>> void sortArrays(T[] array){
+        for(int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array.length - i - 1; j++) {
+                T tmp;
+                if(array[j].compareTo(array[j+1]) > 0){
+                    tmp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = tmp;
+                }
+            }
+        }
+    }
+
+    public static void sortSpacesByCriterion(Space[] forSort){
+        SpaceRoomsAmountComparator criterion = new SpaceRoomsAmountComparator();
+        for(int i = 0; i < forSort.length; i++) {
+            for (int j = 0; j < forSort.length - i - 1; j++) {
+                Space tmp;
+                if(criterion.compare(forSort[j], forSort[j + 1]) > 0){
+                    tmp = forSort[j];
+                    forSort[j] = forSort[j + 1];
+                    forSort[j + 1] = tmp;
+                }
+            }
+        }
+    }
+
+    public static void sortFloorsByCriterion(Floor[] forSort){
+        FloorSpacesAmountComparator criterion = new FloorSpacesAmountComparator();
+        for(int i = 0; i < forSort.length; i++) {
+            for (int j = 0; j < forSort.length - i - 1; j++) {
+                Floor tmp;
+                if(criterion.compare(forSort[j], forSort[j + 1]) > 0){
+                    tmp = forSort[j];
+                    forSort[j] = forSort[j + 1];
+                    forSort[j + 1] = tmp;
+                }
+            }
+        }
+    }
+
+    public static <T> void sortArraysByCriterion(T[] forSort, Comparator<T> criterion){
+        for(int i = 0; i < forSort.length; i++) {
+            for (int j = 0; j < forSort.length - i - 1; j++) {
+                T tmp;
+                if(criterion.compare(forSort[j], forSort[j + 1]) > 0){
+                    tmp = forSort[j];
+                    forSort[j] = forSort[j + 1];
+                    forSort[j + 1] = tmp;
+                }
+            }
+        }
+    }
+
+    public static void setBuildingFactory(BuildingFactory newValue){
+        builder = newValue;
+    }
+
+    public static Space createSpace(double area){
+        return builder.createSpace(area);
+    }
+
+    public static Space createSpace(double area, int roomsCount){
+        return builder.createSpace(roomsCount, area);
+    }
+
+    public static Floor createFloor(int spaceCount){
+        return builder.createFloor(spaceCount);
+    }
+
+    public static Floor createFloor(Space[] spaces){
+        return builder.createFloor(spaces);
+    }
+
+    public static Building createBuilding(int floorsCount, int[] spacesCounts){
+        return builder.createBuilding(floorsCount, spacesCounts);
+    }
+
+    public static Building createBuilding(Floor[] floors){
+        return builder.createBuilding(floors);
     }
 }

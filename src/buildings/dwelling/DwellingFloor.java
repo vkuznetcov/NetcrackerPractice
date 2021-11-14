@@ -5,6 +5,7 @@ import buildings.interfaces.Floor;
 import buildings.interfaces.Space;
 
 import java.io.Serializable;
+import java.util.Iterator;
 
 public class DwellingFloor implements Floor, Serializable
 {
@@ -154,17 +155,17 @@ public class DwellingFloor implements Floor, Serializable
 
     @Override
     public String toString(){
-        StringBuffer forreturn = new StringBuffer("Dwelling Floor(");
+        StringBuilder forReturn = new StringBuilder("Dwelling Floor(");
         for(int i = 0; i < getFloorSize(); i++){
             if(i == getFloorSize() - 1)
             {
-                forreturn.append(floor[i].toString());
+                forReturn.append(floor[i].toString());
                 break;
             }
-            forreturn.append(floor[i].toString() + ", ");
+            forReturn.append(floor[i].toString()).append(", ");
         }
-        forreturn.append(")");
-        return forreturn.toString();
+        forReturn.append(")");
+        return forReturn.toString();
     }
 
     @Override
@@ -198,5 +199,37 @@ public class DwellingFloor implements Floor, Serializable
             result += getFloorSize() ^ getSpace(i).hashCode();
         }
         return result;
+    }
+
+    @Override
+    public Iterator<Space> iterator()
+    {
+        return new Iterator<Space>()
+        {
+            private int index = 0;
+
+            @Override
+            public boolean hasNext()
+            {
+                return index < floor.length;
+            }
+
+            @Override
+            public Space next()
+            {
+                return getSpace(index++);
+            }
+        };
+    }
+
+
+    @Override
+    public int compareTo(Floor o)
+    {
+        if(this.getFloorSize() < o.getFloorSize())
+            return -1;
+        else if(this.getFloorSize() == o.getFloorSize())
+            return 0;
+        else return 1;
     }
 }

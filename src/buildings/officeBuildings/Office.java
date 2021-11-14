@@ -4,8 +4,9 @@ package buildings.officeBuildings;
 import buildings.exceptions.InvalidRoomsCountException;
 import buildings.exceptions.InvalidSpaceAreaException;
 import buildings.interfaces.Space;
+import java.io.Serializable;
 
-public class Office implements Space, java.io.Serializable
+public class Office implements Space, Serializable
 {
     //constants
     public static final double SQUARE = 250;
@@ -107,4 +108,13 @@ public class Office implements Space, java.io.Serializable
         return result;
     }
 
+    @Override
+    public int compareTo(Space o)
+    {
+        if(this.getSquare() < o.getSquare())
+            return -1;
+        else if(this.getSquare() == o.getSquare())
+            return 0;
+        else return 1;
+    }
 }

@@ -99,4 +99,14 @@ public class Flat implements Space, Serializable
         Object forreturn = new Flat(square,rooms);
         return forreturn;
     }
+
+    @Override
+    public int compareTo(Space o)
+    {
+        if(this.getSquare() < o.getSquare())
+            return -1;
+        else if(this.getSquare() == o.getSquare())
+            return 0;
+        else return 1;
+    }
 }

@@ -62,6 +62,39 @@ public class Hotel extends Dwelling
         }
     }
 
+    private double getCoeff(int floorIndex){
+        double coeff = 0;
+        switch(getFloor(floorIndex) instanceof HotelFloor ? ((HotelFloor)getFloor(floorIndex)).getStars():0){
+            case 1:
+            {
+                coeff = 0.25;
+                break;
+            }
+            case 2:
+            {
+                coeff = 0.5;
+                break;
+            }
+            case 3:
+            {
+                coeff = 1;
+                break;
+            }
+            case 4:
+            {
+                coeff = 1.25;
+                break;
+            }
+            case 5:
+            {
+                coeff = 1.5;
+                break;
+            }
+            default: break;
+        }
+        return coeff;
+    }
+
     @Override
     public Space getBestSpace(){
         double coeff = 0;
@@ -70,35 +103,7 @@ public class Hotel extends Dwelling
         Space forreturn = getSpace(0);
         for(int floorIndex = 0; floorIndex < getFloorsAmount(); floorIndex++)
         {
-            coeff = 0;
-            switch(getFloor(floorIndex) instanceof HotelFloor ? ((HotelFloor)getFloor(floorIndex)).getStars():0){
-                    case 1:
-                    {
-                        coeff = 0.25;
-                        break;
-                    }
-                    case 2:
-                    {
-                        coeff = 0.5;
-                        break;
-                    }
-                    case 3:
-                    {
-                        coeff = 1;
-                        break;
-                    }
-                    case 4:
-                    {
-                        coeff = 1.25;
-                        break;
-                    }
-                    case 5:
-                    {
-                        coeff = 1.5;
-                        break;
-                    }
-                    default: break;
-                }
+            coeff = getCoeff(floorIndex);
             area=getFloor(floorIndex).getBestSpace().getSquare();
 
             if(area*coeff>areacoeff)
@@ -114,20 +119,19 @@ public class Hotel extends Dwelling
 
     @Override
     public String toString(){
-        StringBuffer forreturn = new StringBuffer("Hotel(");
-        forreturn.append(getStars() + ", ");
-        forreturn.append(getFloorsAmount() + ", ");
+        StringBuilder forReturn = new StringBuilder("Hotel(");
+        forReturn.append(getStars()).append(", ").append(getFloorsAmount()).append(", ");
         for (int i = 0; i < getFloorsAmount(); i++)
         {
             if (i == getFloorsAmount() - 1)
             {
-                forreturn.append(getFloor(i).toString());
+                forReturn.append(getFloor(i).toString());
                 break;
             }
-            forreturn.append(getFloor(i).toString() + ", ");
+            forReturn.append(getFloor(i).toString()).append(", ");
         }
-        forreturn.append(")");
-        return forreturn.toString();
+        forReturn.append(")");
+        return forReturn.toString();
     }
 
     @Override
@@ -153,5 +157,13 @@ public class Hotel extends Dwelling
         return result;
     }
 
-    //КЛОНИРОВАНИЕ
+    @Override
+    public Object clone()
+    {
+        Hotel forreturn = new Hotel(getFloors());
+        for(int i = 0; i < forreturn.getFloorsAmount(); i++){
+            forreturn.setFloor(i, (Floor)getFloor(i).clone());
+        }
+        return forreturn;
+    }
 }

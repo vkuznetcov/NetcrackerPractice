@@ -10,6 +10,8 @@ import buildings.interfaces.Space;
 import buildings.officeBuildings.lists.officeFloorList.LinkList;
 import buildings.officeBuildings.lists.officeFloorList.LinkListNode;
 
+import java.util.Iterator;
+
 
 public class OfficeBuilding implements Building, java.io.Serializable
 {
@@ -272,5 +274,25 @@ public class OfficeBuilding implements Building, java.io.Serializable
             result += getFloorsAmount() ^ getFloor(i).hashCode();
         }
         return result;
+    }
+
+    @Override
+    public Iterator<Floor> iterator()
+    {
+        return new Iterator<Floor>()
+        {
+            private int index = 0;
+            @Override
+            public boolean hasNext()
+            {
+                return index < getFloorsAmount();
+            }
+
+            @Override
+            public Floor next()
+            {
+                return getFloor(index++);
+            }
+        };
     }
 }

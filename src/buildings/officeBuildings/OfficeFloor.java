@@ -7,6 +7,8 @@ import buildings.interfaces.Space;
 import buildings.officeBuildings.lists.officeList.ArrList;
 import buildings.officeBuildings.lists.officeList.ArrListNode;
 
+import java.util.Iterator;
+
 public class OfficeFloor implements Floor, java.io.Serializable
 {
     private ArrList floor;
@@ -181,5 +183,36 @@ public class OfficeFloor implements Floor, java.io.Serializable
             result += getFloorSize() ^ getSpace(i).hashCode();
         }
         return result;
+    }
+
+
+    @Override
+    public Iterator<Space> iterator()
+    {
+        return new Iterator<Space>()
+        {
+            private int index = 0;
+            @Override
+            public boolean hasNext()
+            {
+                return index < getFloorSize();
+            }
+
+            @Override
+            public Space next()
+            {
+                return getSpace(index++);
+            }
+        };
+    }
+
+    @Override
+    public int compareTo(Floor o)
+    {
+        if(this.getFloorSize() < o.getFloorSize())
+            return -1;
+        else if(this.getFloorSize() == o.getFloorSize())
+            return 0;
+        else return 1;
     }
 }

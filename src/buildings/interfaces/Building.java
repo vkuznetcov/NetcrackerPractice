@@ -1,6 +1,6 @@
 package buildings.interfaces;
 
-public interface Building
+public interface Building extends Iterable<Floor>
 {
     int getFloorsAmount();
 
