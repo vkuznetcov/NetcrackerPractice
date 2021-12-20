@@ -33,14 +33,14 @@ public class Office implements Space, Serializable
 
     public Office(int rooms, double square) throws IllegalArgumentException
     {
-        if (square <= 0 || square > SQUARE)
-        {
-            throw new InvalidSpaceAreaException(square);
-        }
-        if (rooms <= 0 || rooms > ROOMS)
-        {
-            throw new InvalidRoomsCountException(rooms);
-        }
+//        if (square <= 0 || square > SQUARE)
+//        {
+//            throw new InvalidSpaceAreaException(square);
+//        }
+//        if (rooms <= 0 || rooms > ROOMS)
+//        {
+//            throw new InvalidRoomsCountException(rooms);
+//        }
         this.rooms = rooms;
         this.square = square;
     }

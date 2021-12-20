@@ -13,7 +13,7 @@ public class HotelFloor extends DwellingFloor
         stars = this.STARS;
     }
 
-    public HotelFloor(Space[] spacesArr){
+    public HotelFloor(Space... spacesArr){
         super(spacesArr);
         stars = this.STARS;
     }

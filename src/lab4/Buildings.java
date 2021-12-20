@@ -70,21 +70,20 @@ public class Buildings
 
     public static void writeBuilding(Building building, Writer out) throws IOException
     {
-        BufferedWriter writer = new BufferedWriter(out);
         try
         {
-
-            writer.write(building.getFloorsAmount() + " ");
+            out.write(building.getFloorsAmount() + " ");
 
             for (int i = 0; i < building.getFloorsAmount(); i++)
             {
-                writer.write(building.getFloor(i).getFloorSize() + " ");
+                out.write(building.getFloor(i).getFloorSize() + " ");
                 for (int j = 0; j < building.getFloor(i).getFloorSize(); j++)
                 {
-                    writer.write(building.getFloor(i).getSpace(j).getRoomsAmount() + " ");
-                    writer.write(building.getFloor(i).getSpace(j).getSquare() + " ");
+                    out.write(building.getFloor(i).getSpace(j).getRoomsAmount() + " ");
+                    out.write(building.getFloor(i).getSpace(j).getSquare() + " ");
                 }
             }
+            out.flush();
         }
         catch (IOException e)
         {
@@ -124,16 +123,18 @@ public class Buildings
 
     public static void serializeBuilding(Building building, OutputStream out) throws IOException
     {
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(out);)
+        ObjectOutputStream outputStream = new ObjectOutputStream(out);
+        try
         {
             outputStream.writeObject(building);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public static Building deserializeBuilding(InputStream in)
-    {
-        try (ObjectInputStream inputStream = new ObjectInputStream(in);)
-        {
+    public static Building deserializeBuilding(InputStream in) throws IOException {
+        ObjectInputStream inputStream = new ObjectInputStream(in);
+        try{
             return (Building) inputStream.readObject();
         }
         catch (IOException | ClassNotFoundException e)
@@ -231,6 +232,10 @@ public class Buildings
         }
     }
 
+    public <T> void updateService(T value){
+
+    }
+
     public static <T extends Comparable<T>> void sortArrays(T[] array){
         for(int i = 0; i < array.length; i++) {
             for (int j = 0; j < array.length - i - 1; j++) {
@@ -311,5 +316,9 @@ public class Buildings
 
     public static Building createBuilding(Floor[] floors){
         return builder.createBuilding(floors);
+    }
+
+    public static Floor synchronizedFloor(Floor floor){
+        return new SynchronizedFloor(floor);
     }
 }

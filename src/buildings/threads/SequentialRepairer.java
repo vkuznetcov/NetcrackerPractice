@@ -5,11 +5,11 @@ import buildings.interfaces.Floor;
 public class SequentialRepairer implements Runnable
 {
     Floor floor;
-    Semaphore semaphoreCleaner;
+    Semaphore semaphore;
 
-    public SequentialRepairer(Floor floor, Semaphore semaphore1){
+    public SequentialRepairer(Floor floor, Semaphore semaphore){
         this.floor = floor;
-        this.semaphoreCleaner = semaphore1;
+        this.semaphore = semaphore;
     }
 
     @Override
@@ -17,7 +17,7 @@ public class SequentialRepairer implements Runnable
     {
         for (int i = 0; i < floor.getFloorSize(); i++)
         {
-                while(!semaphoreCleaner.getRepair()) {
+                while(!semaphore.getRepair()) {
                 try {
                     this.wait(1);
                 } catch (InterruptedException e) {
@@ -28,8 +28,8 @@ public class SequentialRepairer implements Runnable
 //                semaphoreCleaner.release();
 //                semaphoreRepairer.acquire();
 //
-                semaphoreCleaner.changeRepair();
-                semaphoreCleaner.changeClean();
+                semaphore.changeRepair();
+                semaphore.changeClean();
 
         }
         System.out.println("Repairing ended");

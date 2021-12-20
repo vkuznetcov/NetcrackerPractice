@@ -5,11 +5,11 @@ import buildings.interfaces.Floor;
 public class SequentialCleaner implements Runnable
 {
     Floor floor;
-    Semaphore semaphoreCleaner;
+    Semaphore semaphore;
 
-    public SequentialCleaner(Floor floor, Semaphore semaphore1){
+    public SequentialCleaner(Floor floor, Semaphore semaphore){
         this.floor = floor;
-        this.semaphoreCleaner = semaphore1;
+        this.semaphore = semaphore;
     }
 
     @Override
@@ -18,7 +18,7 @@ public class SequentialCleaner implements Runnable
         for (int i = 0; i < floor.getFloorSize(); i++)
         {
 
-                while (!semaphoreCleaner.getClean()) {
+                while (!semaphore.getClean()) {
                 try {
                     this.wait(1);
                 } catch (InterruptedException e) {
@@ -29,8 +29,8 @@ public class SequentialCleaner implements Runnable
                 System.out.println("Cleaning space number " + i + " with total area " + floor.getSpace(i).getSquare() + " square meters");
 //            semaphoreRepairer.release();
 //            semaphoreCleaner.acquire();
-                semaphoreCleaner.changeClean();
-                semaphoreCleaner.changeRepair();
+                semaphore.changeClean();
+                semaphore.changeRepair();
 
         }
         System.out.println("Cleaning ended");

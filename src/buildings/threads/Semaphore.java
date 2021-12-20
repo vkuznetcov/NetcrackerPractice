@@ -9,26 +9,21 @@ public class Semaphore
     private boolean isRepair;
     private boolean isClean;
 
-    String type;
-
-    public Semaphore(int counter, String str){
+    public Semaphore(int counter){
         this.counter = counter;
         maxValue = counter;
         isRepair = true;
         isClean = false;
-        type = str;
     }
 
     public void acquire(){
         --counter;
-        System.out.println(type + " aq " + counter);
-        while(counter == 0){}
+        while(counter < 1){}
 //        --counter;
     }
 
     public void release(){
         counter = counter < maxValue ? counter + 1 : maxValue;
-        System.out.println(type + " " + counter);
     }
 
     public int getCounter(){
