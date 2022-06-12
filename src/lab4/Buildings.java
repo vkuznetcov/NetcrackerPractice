@@ -2,19 +2,22 @@ package lab4;
 
 import buildings.criterions.FloorSpacesAmountComparator;
 import buildings.criterions.SpaceRoomsAmountComparator;
+import buildings.dwelling.Dwelling;
 import buildings.dwelling.DwellingFactory;
+import buildings.dwelling.DwellingFloor;
 import buildings.dwelling.Flat;
 import buildings.interfaces.Building;
 import buildings.interfaces.BuildingFactory;
 import buildings.interfaces.Floor;
 import buildings.interfaces.Space;
 import buildings.officeBuildings.Office;
-import buildings.officeBuildings.OfficeBuilding;
 import buildings.officeBuildings.OfficeFloor;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+@SuppressWarnings({"unused"})
 public class Buildings
 {
     static BuildingFactory builder = new DwellingFactory();
@@ -68,7 +71,7 @@ public class Buildings
         return null;
     }
 
-    public static void writeBuilding(Building building, Writer out) throws IOException
+    public static void writeBuilding(Building building, Writer out)
     {
         try
         {
@@ -146,8 +149,7 @@ public class Buildings
 
     public static void writeBuildingFormat(Building building, Writer out)
     {
-        Formatter formatter = new Formatter(out);
-        try
+        try (Formatter formatter = new Formatter(out))
         {
             formatter.format("Building floors amount: %d\n\n", building.getFloorsAmount());
 
@@ -165,10 +167,6 @@ public class Buildings
         catch (Exception e)
         {
             e.printStackTrace();
-        }
-        finally
-        {
-            formatter.close();
         }
     }
 
@@ -316,6 +314,48 @@ public class Buildings
 
     public static Building createBuilding(Floor[] floors){
         return builder.createBuilding(floors);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked call"})
+    public static Space createSpace(double area, Class spaceClass)
+            throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
+    {
+        return (Space) spaceClass.getConstructor(double.class).newInstance(area);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked call"})
+    public static Space createSpace(double area, int roomsCount, Class spaceClass)
+            throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
+    {
+        return (Space) spaceClass.getConstructor(double.class, int.class).newInstance(area, roomsCount);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked call"})
+    public static Floor createFloor(int spaceCount, Class floorClass)
+            throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
+    {
+        return (Floor) floorClass.getConstructor(int.class).newInstance(spaceCount);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked call"})
+    public static Floor createFloor(Space[] spaces, Class floorClass)
+            throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
+    {
+        return (Floor) floorClass.getConstructor(spaces.getClass()).newInstance((Object) spaces);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked call"})
+    public static Building createBuilding(int floorsCount, int[] spacesCounts, Class buildingClass)
+            throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
+    {
+        return (Building) buildingClass.getConstructor(int.class, int[].class).newInstance(floorsCount, spacesCounts);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked call"})
+    public static Building createBuilding(Floor[] floors, Class buildingCLass)
+            throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
+    {
+        return (Building) buildingCLass.getConstructor(floors.getClass()).newInstance((Object) floors);
     }
 
     public static Floor synchronizedFloor(Floor floor){

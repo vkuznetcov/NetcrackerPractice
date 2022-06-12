@@ -1,28 +1,20 @@
-
-import buildings.dwelling.Dwelling;
 import buildings.dwelling.DwellingFloor;
-import buildings.dwelling.Flat;
-import buildings.dwelling.hotel.Hotel;
-import buildings.dwelling.hotel.HotelFloor;
-import buildings.interfaces.Building;
 import buildings.interfaces.Floor;
-import buildings.interfaces.Space;
-import buildings.officeBuildings.OfficeBuilding;
-import buildings.officeBuildings.OfficeFloor;
-import buildings.threads.*;
-import lab4.Buildings;
-
-import javax.print.attribute.HashAttributeSet;
-import java.io.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import buildings.threads.Semaphore;
+import buildings.threads.SequentialCleaner;
+import buildings.threads.SequentialRepairer;
 
 public class Main
 {
     public static void main(String[] args)
     {
-
+        Floor floor = new DwellingFloor(5);
+        Semaphore semaphore = new Semaphore();
+        SequentialCleaner cleaner = new SequentialCleaner(floor, semaphore);
+        SequentialRepairer repairer = new SequentialRepairer(floor, semaphore);
+        Thread thread = new Thread(cleaner);
+        Thread thread1 = new Thread(repairer);
+        thread1.start();
+        thread.start();
     }
 }

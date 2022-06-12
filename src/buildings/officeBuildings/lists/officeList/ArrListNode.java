@@ -20,7 +20,7 @@ public class ArrListNode implements Serializable
 
     public ArrListNode(Space newOffice)
     {
-        data = new Office(newOffice.getRoomsAmount(), newOffice.getSquare());
+        data = newOffice;
         //data = (Space)newOffice.clone();
     }
 
