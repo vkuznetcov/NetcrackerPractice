@@ -12,6 +12,7 @@ import buildings.interfaces.Floor;
 import buildings.interfaces.Space;
 import buildings.officeBuildings.Office;
 import buildings.officeBuildings.OfficeFloor;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -71,31 +72,42 @@ public class Buildings
         return null;
     }
 
-    public static Building inputBuilding(InputStream in, Class<Building> buildingClass,
-                                         Class<Floor> floorCLass, Class<Space> spaceClass)
+    public static <B extends Building, F extends Floor, S extends Space>
+    Building inputBuilding(InputStream in, Class<B> buildingClass,
+                                         Class<F> floorCLass, Class<S> spaceClass)
     {
         DataInputStream inputStream = new DataInputStream(in);
         try
         {
-            Floor[] build = new Floor[inputStream.readInt()];
+            int size = inputStream.readInt();
+            Floor[] build = new Floor[size];
             for (int i = 0; i < build.length; i++)
             {
-                build[i] = createFloor(inputStream.readInt());
+                build[i] = createFloor(inputStream.readInt(), floorCLass);
                 for (int j = 0; j < build[i].getFloorSize(); j++)
                 {
                     int rooms = inputStream.readInt();
                     double square = inputStream.readDouble();
-                    build[i].setSpace(j, createSpace(square, rooms));
+                    build[i].setSpace(j, createSpace(square, rooms, spaceClass));
                 }
             }
-            return createBuilding(build);
+            return createBuilding(build, buildingClass);
         }
-        catch (IOException | IllegalArgumentException e)
+        catch (IOException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e)
         {
             e.printStackTrace();
         }
 
         return null;
+    }
+
+    public static void main(String[] args) throws IOException
+    {
+        try(Reader input = new FileReader(
+                "D:\\code project (.java)\\NetcrackerPractice\\info.txt"))
+        {
+            System.out.println(readBuilding(input, Dwelling.class, DwellingFloor.class, Office.class));
+        }
     }
 
     public static void writeBuilding(Building building, Writer out)
@@ -145,6 +157,38 @@ public class Buildings
             return createBuilding(build);
         }
         catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static <B extends Building, F extends Floor, S extends Space>Building readBuilding(Reader in,
+                                                                                              Class<B> buildingClass,
+                                                                                              Class<F> floorClass,
+                                                                                              Class<S> spaceClass)
+    {
+        StreamTokenizer tokenizer = new StreamTokenizer(in);
+        try
+        {
+            tokenizer.nextToken();
+            Floor[] build = new Floor[(int) tokenizer.nval];
+            for (int i = 0; i < build.length; i++)
+            {
+                tokenizer.nextToken();
+                build[i] = createFloor((int) tokenizer.nval, floorClass);
+                for (int j = 0; j < build[i].getFloorSize(); j++)
+                {
+                    tokenizer.nextToken();
+                    int rooms = (int) tokenizer.nval;
+                    tokenizer.nextToken();
+                    double square = tokenizer.nval;
+                    build[i].setSpace(j, createSpace(square, rooms, spaceClass));
+                }
+            }
+            return createBuilding(build, buildingClass);
+        }
+        catch (IOException | InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e)
         {
             e.printStackTrace();
         }
@@ -228,6 +272,40 @@ public class Buildings
             e.printStackTrace();
         }
 
+        return null;
+    }
+
+    public static <B extends Building, F extends Floor, S extends Space>
+    Building readBuilding(Scanner scanner, Class<B> buildingClass, Class<F> floorClass, Class<S> spaceClass)
+    {
+        try
+        {
+            scanner.useLocale(Locale.US);
+            Floor[] build;
+            if (scanner.hasNext())
+            {
+                build = new Floor[(int) scanner.nextInt()];
+            }
+            else
+            {
+                return null;
+            }
+            for (int i = 0; i < build.length; i++)
+            {
+                build[i] = createFloor(scanner.nextInt(), floorClass);
+                for (int j = 0; j < build[i].getFloorSize(); j++)
+                {
+                    int rooms = scanner.nextInt();
+                    double square = scanner.nextDouble();
+                    build[i].setSpace(j, createSpace(square, rooms, spaceClass));
+                }
+            }
+            return createBuilding(build, buildingClass);
+        }
+        catch (IllegalArgumentException | InputMismatchException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -337,18 +415,6 @@ public class Buildings
 
     public static Building createBuilding(int floorsCount, int[] spacesCounts){
         return builder.createBuilding(floorsCount, spacesCounts);
-    }
-
-    public static void main(String[] args)
-    {
-        try
-        {
-            System.out.println(createBuilding(new Floor[]{new OfficeFloor(2), new DwellingFloor(3)}, Dwelling.class));
-        }
-        catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e)
-        {
-            e.printStackTrace();
-        }
     }
 
     public static Building createBuilding(Floor[] floors){

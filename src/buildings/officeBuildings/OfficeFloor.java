@@ -74,11 +74,11 @@ public class OfficeFloor implements Floor, java.io.Serializable
 
     public Space[] getFloor()
     {
-        Space forReturn[] = new Space[floor.length()];
+        Space[] forReturn = new Space[floor.length()];
 
         for (int i = 0; i < forReturn.length; ++i)
         {
-            forReturn[i] = new Office(floor.getByNum(i).data.getRoomsAmount(), floor.getByNum(i).data.getSquare());
+            forReturn[i] = new Office(floor.getByNum(i).data.getSquare(), floor.getByNum(i).data.getRoomsAmount());
         }
 
         return forReturn;
@@ -90,7 +90,7 @@ public class OfficeFloor implements Floor, java.io.Serializable
         {
             throw new SpaceIndexOutOfBoundsException(num, floor.length() - 1);
         }
-        return new Office(floor.getByNum(num).data.getRoomsAmount(), floor.getByNum(num).data.getSquare());
+        return new Office(floor.getByNum(num).data.getSquare(), floor.getByNum(num).data.getRoomsAmount());
     }
 
     public void setSpace(int num, Space newSpace) throws SpaceIndexOutOfBoundsException
@@ -123,7 +123,7 @@ public class OfficeFloor implements Floor, java.io.Serializable
 
     public Space getBestSpace()
     {
-        Space forReturn = new Office(floor.getByNum(0).data.getRoomsAmount(), floor.getByNum(0).data.getSquare());
+        Space forReturn = new Office(floor.getByNum(0).data.getSquare(), floor.getByNum(0).data.getRoomsAmount());
         for (int i = 1; i < floor.length(); ++i)
         {
             if (forReturn.getSquare() < floor.getByNum(i).data.getSquare())
@@ -138,18 +138,18 @@ public class OfficeFloor implements Floor, java.io.Serializable
     @Override
     public String toString()
     {
-        StringBuffer forreturn = new StringBuffer("Office Floor(");
+        StringBuilder forReturn = new StringBuilder("Office Floor(");
         for (int i = 0; i < getFloorSize(); i++)
         {
             if (i == getFloorSize() - 1)
             {
-                forreturn.append(getSpace(i).toString());
+                forReturn.append(getSpace(i).toString());
                 break;
             }
-            forreturn.append(getSpace(i).toString() + ", ");
+            forReturn.append(getSpace(i).toString()).append(", ");
         }
-        forreturn.append(")");
-        return forreturn.toString();
+        forReturn.append(")");
+        return forReturn.toString();
     }
 
     @Override
@@ -189,9 +189,10 @@ public class OfficeFloor implements Floor, java.io.Serializable
     @Override
     public Iterator<Space> iterator()
     {
-        return new Iterator<Space>()
+        return new Iterator<>()
         {
             private int index = 0;
+
             @Override
             public boolean hasNext()
             {
@@ -209,10 +210,6 @@ public class OfficeFloor implements Floor, java.io.Serializable
     @Override
     public int compareTo(Floor o)
     {
-        if(this.getFloorSize() < o.getFloorSize())
-            return -1;
-        else if(this.getFloorSize() == o.getFloorSize())
-            return 0;
-        else return 1;
+        return this.getFloorSize() - o.getFloorSize();
     }
 }

@@ -1,7 +1,6 @@
 package buildings.officeBuildings;
 
 
-import buildings.exceptions.InvalidRoomsCountException;
 import buildings.exceptions.InvalidSpaceAreaException;
 import buildings.interfaces.Space;
 import java.io.Serializable;
@@ -31,7 +30,7 @@ public class Office implements Space, Serializable
         rooms = ROOMS;
     }
 
-    public Office(int rooms, double square) throws IllegalArgumentException
+    public Office(double square, int rooms) throws IllegalArgumentException
     {
 //        if (square <= 0 || square > SQUARE)
 //        {
@@ -82,9 +81,7 @@ public class Office implements Space, Serializable
         if(object instanceof Office){
             if(getRoomsAmount()!=((Office) object).getRoomsAmount())
                 return false;
-            if(getSquare()!=((Office) object).getSquare())
-                return false;
-            return true;
+            return getSquare() == ((Office) object).getSquare();
         }
         else return false;
     }
@@ -92,8 +89,7 @@ public class Office implements Space, Serializable
     @Override
     public Object clone()
     {
-        Object forreturn = new Office(rooms, square);
-        return forreturn;
+        return new Office(square, rooms);
     }
 
     @Override
@@ -111,10 +107,6 @@ public class Office implements Space, Serializable
     @Override
     public int compareTo(Space o)
     {
-        if(this.getSquare() < o.getSquare())
-            return -1;
-        else if(this.getSquare() == o.getSquare())
-            return 0;
-        else return 1;
+        return (int) (this.getSquare() - o.getSquare());
     }
 }

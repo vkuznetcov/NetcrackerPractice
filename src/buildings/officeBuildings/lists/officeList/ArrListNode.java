@@ -26,7 +26,7 @@ public class ArrListNode implements Serializable
 
     public ArrListNode(ArrListNode newNode)
     {
-        data = new Office(newNode.data.getRoomsAmount(), newNode.data.getSquare());
+        data = new Office(newNode.data.getSquare(), newNode.data.getRoomsAmount());
         //data = (Space)newNode.data.clone();
     }
 
