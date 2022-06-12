@@ -45,7 +45,34 @@ public class Buildings
         }
     }
 
-    public static Building inputBuilding(InputStream in) throws IOException
+    public static Building inputBuilding(InputStream in)
+    {
+        DataInputStream inputStream = new DataInputStream(in);
+        try
+        {
+            Floor[] build = new Floor[inputStream.readInt()];
+            for (int i = 0; i < build.length; i++)
+            {
+                build[i] = createFloor(inputStream.readInt());
+                for (int j = 0; j < build[i].getFloorSize(); j++)
+                {
+                    int rooms = inputStream.readInt();
+                    double square = inputStream.readDouble();
+                    build[i].setSpace(j, createSpace(square, rooms));
+                }
+            }
+            return createBuilding(build);
+        }
+        catch (IOException | IllegalArgumentException e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static Building inputBuilding(InputStream in, Class<Building> buildingClass,
+                                         Class<Floor> floorCLass, Class<Space> spaceClass)
     {
         DataInputStream inputStream = new DataInputStream(in);
         try
@@ -312,50 +339,56 @@ public class Buildings
         return builder.createBuilding(floorsCount, spacesCounts);
     }
 
+    public static void main(String[] args)
+    {
+        try
+        {
+            System.out.println(createBuilding(new Floor[]{new OfficeFloor(2), new DwellingFloor(3)}, Dwelling.class));
+        }
+        catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public static Building createBuilding(Floor[] floors){
         return builder.createBuilding(floors);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked call"})
-    public static Space createSpace(double area, Class spaceClass)
+    public static <T extends Space> Space createSpace(double area, Class<T> spaceClass)
             throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
     {
-        return (Space) spaceClass.getConstructor(double.class).newInstance(area);
+        return spaceClass.getConstructor(double.class).newInstance(area);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked call"})
-    public static Space createSpace(double area, int roomsCount, Class spaceClass)
+    public static <T extends Space> Space createSpace(double area, int roomsCount, Class<T> spaceClass)
             throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
     {
-        return (Space) spaceClass.getConstructor(double.class, int.class).newInstance(area, roomsCount);
+        return spaceClass.getConstructor(double.class, int.class).newInstance(area, roomsCount);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked call"})
-    public static Floor createFloor(int spaceCount, Class floorClass)
+    public static <T extends Floor> Floor createFloor(int spaceCount, Class<T> floorClass)
             throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
     {
-        return (Floor) floorClass.getConstructor(int.class).newInstance(spaceCount);
+        return floorClass.getConstructor(int.class).newInstance(spaceCount);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked call"})
-    public static Floor createFloor(Space[] spaces, Class floorClass)
+    public static <T extends Floor> Floor createFloor(Space[] spaces, Class<T> floorClass)
             throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
     {
-        return (Floor) floorClass.getConstructor(spaces.getClass()).newInstance((Object) spaces);
+        return floorClass.getConstructor(spaces.getClass()).newInstance((Object) spaces);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked call"})
-    public static Building createBuilding(int floorsCount, int[] spacesCounts, Class buildingClass)
+    public static <T extends Building> Building createBuilding(int floorsCount, int[] spacesCounts, Class<T> buildingClass)
             throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
     {
-        return (Building) buildingClass.getConstructor(int.class, int[].class).newInstance(floorsCount, spacesCounts);
+        return buildingClass.getConstructor(int.class, int[].class).newInstance(floorsCount, spacesCounts);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked call"})
-    public static Building createBuilding(Floor[] floors, Class buildingCLass)
+    public static <T extends Building> Building createBuilding(Floor[] floors, Class<T> buildingCLass)
             throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
     {
-        return (Building) buildingCLass.getConstructor(floors.getClass()).newInstance((Object) floors);
+        return buildingCLass.getConstructor(floors.getClass()).newInstance((Object) floors);
     }
 
     public static Floor synchronizedFloor(Floor floor){
